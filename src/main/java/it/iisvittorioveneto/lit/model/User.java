@@ -1,4 +1,6 @@
-package it.iisvittorioveneto.lit;
+package it.iisvittorioveneto.lit.model;
+
+import it.iisvittorioveneto.lit.Warehouse;
 
 public class User {
     private String fullName;
@@ -11,7 +13,5 @@ public class User {
         this.username = username;
     }
 
-    public void createWarehouse(String name, String path) {
-        Warehouse warehouse = new Warehouse();
-    }
+
 }

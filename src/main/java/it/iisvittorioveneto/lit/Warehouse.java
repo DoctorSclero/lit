@@ -1,20 +1,49 @@
 package it.iisvittorioveneto.lit;
 
+import it.iisvittorioveneto.lit.model.User;
+
 public class Warehouse {
     private String name;
     private String path;
+    private String description;
+    private User owner;
 
-    /*
-     * Initializes the warehouse creating the folder if it doesn't exist
-     * and storing the default configuration file in a hidden
-     * directory named ".lit"
-     */
-    public void init() {
+    public Warehouse(String name, String path, String description, User owner) {
         this.name = name;
         this.path = path;
+        this.description = description;
+        this.owner = owner;
     }
 
-    public void loadFromLitDirectory() {
+    public void importFile(String filePath) {
+
+    }
+
+    public void saveVersion() {
+
+    }
+
+    public void restoreVersion() {
+
+    }
+
+    public void getGeneralStats() {
+
+    }
+
+    public void getFileStats() {
+
+    }
+
+    public void getCollaboratorsStats() {
+
+    }
+
+    public void getInfo() {
+
+    }
+
+    public void exportWarehouse() {
 
     }
 
