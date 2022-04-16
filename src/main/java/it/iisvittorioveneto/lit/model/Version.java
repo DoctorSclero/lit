@@ -1,4 +1,4 @@
-package it.iisvittorioveneto.lit;
+package it.iisvittorioveneto.lit.model;
 
 public class Version {
     private String id;
