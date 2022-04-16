@@ -1,2 +1,0 @@
-# Lit
-Lightweight Interactive Tools
