@@ -12,6 +12,6 @@ public class User {
     }
 
     public void createWarehouse(String name, String path) {
-        Warehouse warehouse = new Warehouse();
+        Warehouse warehouse = new Warehouse(name, path);
     }
 }
