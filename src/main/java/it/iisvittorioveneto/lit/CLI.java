@@ -1,5 +1,7 @@
 package it.iisvittorioveneto.lit;
 
+import com.sun.security.auth.module.NTSystem;
+
 public class CLI {
 
     public static void main(String[] args) {
@@ -15,11 +17,21 @@ public class CLI {
             switch(input){
                 case 1:
                     System.out.flush();
-                    Application.createWareHouse();
+                    System.out.println("Inserisci nome del magazzino: ");
+                    String wareHouseName = System.console().readLine();
+                    System.out.flush();
+                    System.out.println("Inserisci percorso di creazione magazzino: ");
+                    String wareHousePath = System.console().readLine();
+                    System.out.flush();
+                    System.out.println("Inserisci descrizione magazzino: ");
+                    String wareHouseDescription = System.console().readLine();
+                    System.out.flush();
+                    //get windows current user
+                    String user = System.getProperty("user.name");
+                    Application.CreateWarehouse(wareHouseName, wareHousePath, wareHouseDescription, user);
                     break;
             }
         }
-
     }
 
 
