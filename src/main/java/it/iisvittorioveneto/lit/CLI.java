@@ -26,23 +26,24 @@ public class CLI {
                     System.out.println("Inserisci descrizione magazzino: ");
                     String wareHouseDescription = System.console().readLine();
                     System.out.flush();
-                    //get windows current user
-                    String user = System.getProperty("user.name");
-                    Application.CreateWarehouse(wareHouseName, wareHousePath, wareHouseDescription, user);
+                    //ask for email
+                    System.out.println("Inserisci email del creatore: ");
+                    User user = new User(System.getProperty("user.name"), );
+                    Application.createWarehouse(wareHouseName, wareHousePath, wareHouseDescription, user);
                     break;
                 case 2:
                     System.out.flush();
                     //ask for path
                     System.out.println("Inserisci percorso di apertura magazzino: ");
                     String path = System.console().readLine();
-                    Application.OpenWarehouse(path);
+                    Application.openWarehouse(path);
                     break;
                 case 3:
                     System.out.flush();
                     //ask for id: int
                     System.out.println("Inserisci id del magazzino da chiudere: ");
                     int id = Integer.parseInt(System.console().readLine());
-                    Application.CloseWarehouse(id);
+                    Application.closeWarehouse(id);
                     break;
                 case 4:
                     System.out.flush();
