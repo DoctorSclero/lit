@@ -2,6 +2,8 @@ package it.iisvittorioveneto.lit;
 
 import it.iisvittorioveneto.lit.model.User;
 
+import java.util.List;
+
 public class CLI {
 
     public static void main(String[] args) {
@@ -57,7 +59,7 @@ public class CLI {
                 case 4:
                     System.out.flush();
                     //print all warehouses
-                    Application.getInstance().printWarehouses();
+                    System.out.println(cli.listOpenedWarehouses(Application.getInstance().getOpenedWarehouses()));
                     break;
             }
         }
@@ -87,6 +89,23 @@ public class CLI {
         strb.append(" 4. Visualizza Statistiche\n");
         strb.append(" 5. Visualizza informazioni Magazzino\n");
         strb.append(" 6. Esporta Magazzino\n");
+        strb.append("|                                                     |\n");
+        strb.append("-------------------------------------------------------\n");
+        return strb.toString();
+    }
+
+    /**
+     * Prints the list of opened warehouses
+     * @param openedWarehouses list of opened warehouses
+     * @return string representation of the opened warehouses
+     */
+    private String listOpenedWarehouses(List<Warehouse> openedWarehouses) {
+        StringBuilder strb = new StringBuilder();
+        //           1234567890123456789012345678901234567890123456789012345
+        strb.append("-------------------------------------------------------\n");
+        for (int i = 0; i < openedWarehouses.size(); i++) {
+            strb.append("| " + (i + 1) + ". " + openedWarehouses.get(i).getName() + " |\n");
+        }
         strb.append("|                                                     |\n");
         strb.append("-------------------------------------------------------\n");
         return strb.toString();
