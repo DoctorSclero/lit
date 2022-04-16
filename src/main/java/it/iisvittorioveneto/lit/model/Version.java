@@ -11,4 +11,16 @@ public class Version {
         this.name = name;
         this.authors = authors;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String[] getAuthors() {
+        return authors;
+    }
 }
