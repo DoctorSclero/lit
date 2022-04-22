@@ -14,6 +14,7 @@ public class CLI {
             input = Integer.parseInt(System.console().readLine());
             switch(input){
                 case 1:
+                    //crea magazzino
                     System.out.flush();
                     System.out.println("Inserisci nome del magazzino: ");
                     String wareHouseName = System.console().readLine();
@@ -43,18 +44,21 @@ public class CLI {
                     Application.getInstance().createWarehouse(wareHouseName, wareHousePath, wareHouseDescription, user);
                     break;
                 case 2:
+                    //apri magazzino
                     System.out.flush();
                     System.out.println("Inserisci percorso di apertura magazzino: ");
                     String path = System.console().readLine();
                     Application.getInstance().openWarehouse(path);
                     break;
                 case 3:
+                    //chiudi magazzino
                     System.out.flush();
                     System.out.println("Inserisci id del magazzino da chiudere: ");
                     int id = Integer.parseInt(System.console().readLine());
                     Application.getInstance().closeWarehouse(id);
                     break;
                 case 4:
+                    //stampa tutti i magazzini
                     System.out.flush();
                     //print all warehouses
                     Application.getInstance().printWarehouses();
