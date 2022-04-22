@@ -68,6 +68,10 @@ public class Application {
         // TODO: close the warehouse and save all the changes
     }
 
+    public List<Warehouse> getOpenedWarehouses() {
+        return openedWarehouses;
+    }
+
     public Warehouse getWarehouseById(int id) {
         return openedWarehouses.get(id);
     }
