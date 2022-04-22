@@ -11,7 +11,7 @@ public class CLI {
 
         System.out.flush();
         int input = 0;
-        while(input != -1){
+        while(input != -1) {
             System.out.println(cli.menu0());
             input = Integer.parseInt(System.console().readLine());
             switch(input){
