@@ -1,11 +1,15 @@
 package it.iisvittorioveneto.lit;
 
+import it.iisvittorioveneto.lit.database.JSONDocument;
 import it.iisvittorioveneto.lit.exceptions.DirectoryCreationException;
 import it.iisvittorioveneto.lit.model.User;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Application {
@@ -28,9 +32,21 @@ public class Application {
                 "This is a test", new User("vittorio", "vittorio@gmail.com", "ciano"));
     }
 
+    // Public Constructor
+    public Application() {
+        openedWarehouses = new ArrayList<>();
+    }
+
     public void createWarehouse(String name, String path, String description, User owner)
-            throws InvalidPathException, DirectoryCreationException {
+            throws InvalidPathException, DirectoryCreationException, IOException {
         // TODO: generate directory and config files for the new warehouse
+
+        // If the path exists
+        Path warehousePath = Paths.get(path);
+
+        if (warehousePath.toFile().exists()) {
+            // TODO implement the exception
+        }
 
         // Check if the path has a ".lit" directory inside
         if (Paths.get(path + "/.lit").toFile().exists()) {
@@ -40,7 +56,6 @@ public class Application {
         // Create the .lit directory if error occurs delete the directory
         if (Paths.get(path + "/.lit").toFile().mkdir()) {
             // Create the settings, versions and stats directory inside the .lit directory
-            Paths.get(path + "/.lit/settings").toFile().mkdir();
             Paths.get(path + "/.lit/versions").toFile().mkdir();
             Paths.get(path + "/.lit/stats").toFile().mkdir();
         } else {
@@ -50,18 +65,21 @@ public class Application {
             throw new DirectoryCreationException(path, "Error while creating the .lit directory");
         }
 
-
         // TODO: create the json config file
 
-
+        try {
+            JSONDocument<JSONObject> settings = new JSONDocument<>(path + "/.lit/config.json");
+        } catch (IOException ioe) {
+            throw new IOException("Error while creating the config file");
+        }
 
         new Warehouse(name, path, description, owner);
     }
 
-    public void openWarehouse(String path) {
+    public Warehouse openWarehouse(String path) {
         // TODO: read all the files from the warehouse and create the warehouse object
 
-
+        return null;
     }
 
     public void closeWarehouse(int id) {
@@ -72,7 +90,7 @@ public class Application {
         return openedWarehouses;
     }
 
-    public Warehouse getWarehouseById(int id) {
+    public Warehouse getWarehouse(int id) {
         return openedWarehouses.get(id);
     }
 
