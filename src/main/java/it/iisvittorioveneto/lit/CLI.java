@@ -55,6 +55,8 @@ public class CLI {
                 case 3:
                     //chiudi magazzino
                     System.out.flush();
+                    //list all opened warehouses
+
                     System.out.println("Inserisci id del magazzino da chiudere: ");
                     int id = Integer.parseInt(System.console().readLine());
                     Application.getInstance().closeWarehouse(id);
