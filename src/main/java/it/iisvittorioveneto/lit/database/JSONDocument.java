@@ -16,8 +16,8 @@ import java.io.*;
  */
 public class JSONDocument<T> {
 
-    public String path;
-    public Object content;
+    private String path;
+    private Object content;
 
     public JSONDocument(String path) throws IOException {
 

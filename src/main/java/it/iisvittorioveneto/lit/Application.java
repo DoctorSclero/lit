@@ -111,12 +111,38 @@ public class Application {
      * @param path The path of the warehouse to open
      */
     public void openWarehouse(String path) {
-        // TODO: read all the files from the warehouse and create the warehouse object
+        // Check if the path exists
+        if (Paths.get(path).toFile().exists()) {
+            // Check if the path has a ".lit" directory inside
+            if (Paths.get(path + "/.lit").toFile().exists()) {
+                try {
+                    JSONDocument<JSONObject> settings = new JSONDocument<>(path + "/.lit/database/config.json");
 
+                    // Load the settings of the warehouse
+                    this.openedWarehouses.add(
+                            new Warehouse(
+                                    settings.getContent().getString("name"),
+                                    settings.getContent().getString("path"),
+                                    settings.getContent().getString("description"),
+                                    new User(
+                                            settings.getContent().getJSONObject("user").getString("fullname"),
+                                            settings.getContent().getJSONObject("user").getString("username"),
+                                            settings.getContent().getJSONObject("user").getString("email")
+                                    )
+                            )
+                    );
+                } catch (IOException ioe) {
+                    // Log the error
+                    System.out.println("Error while opening the config file");
+                }
+            } else {
+                throw new InvalidPathException(path, "The path does not contain a .lit directory");
+            }
+        }
     }
 
     public void closeWarehouse(int id) {
-        // TODO: close the warehouse and save all the changes
+
     }
 
     public List<Warehouse> getOpenedWarehouses() {
