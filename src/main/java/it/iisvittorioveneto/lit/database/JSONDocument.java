@@ -36,17 +36,17 @@ public class JSONDocument<T> {
 
             // Parse the JSON file
             JSONTokener tokener = new JSONTokener(reader);
-            content = tokener.nextValue();
+            if (tokener.more()) {
+                content = tokener.nextValue();
+            }
 
         } catch (FileNotFoundException ignored) {}
 
     }
 
     public void saveDocument() throws IOException {
-
         FileWriter writer = new FileWriter(path);
         writer.write(JSONStringer.valueToString(content));
-
     }
 
     public String getPath() {

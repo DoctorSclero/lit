@@ -1,6 +1,7 @@
 package it.iisvittorioveneto.lit.model;
 
 import it.iisvittorioveneto.lit.Warehouse;
+import it.iisvittorioveneto.lit.database.JSONDocument;
 
 public class User {
     private String fullName;

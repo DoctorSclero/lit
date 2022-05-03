@@ -27,15 +27,15 @@ public class Warehouse {
 
     }
 
-    public void getGeneralStats() {
+    public void getCollaborators() {
+
+    }
+
+    public void getVersions() {
 
     }
 
     public void getFileStats() {
-
-    }
-
-    public void getCollaboratorsStats() {
 
     }
 
