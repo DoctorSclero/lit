@@ -3,13 +3,12 @@ package it.iisvittorioveneto.lit.model;
 public class Version {
     private String id;
     private String name;
-    private String[] authors;
+    private String[] contributors;
 
-
-    public Version(String id, String name, String[] authors) {
+    public Version(String id, String name, String[] contributors) {
         this.id = id;
         this.name = name;
-        this.authors = authors;
+        this.contributors = contributors;
     }
 
     public String getId() {
@@ -20,7 +19,7 @@ public class Version {
         return name;
     }
 
-    public String[] getAuthors() {
-        return authors;
+    public String[] getContributors() {
+        return contributors;
     }
 }
