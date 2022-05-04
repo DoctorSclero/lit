@@ -1,9 +1,11 @@
 package it.iisvittorioveneto.lit.database;
 
+import org.json.JSONObject;
 import org.json.JSONStringer;
 import org.json.JSONTokener;
 
 import java.io.*;
+import java.util.function.Supplier;
 
 /**
  * * Check
@@ -18,6 +20,7 @@ public class JSONDocument<T> {
 
     private String path;
     private Object content;
+    private Class<T> type;
 
     public JSONDocument(String path) throws IOException {
 
@@ -44,9 +47,14 @@ public class JSONDocument<T> {
 
     }
 
-    public void saveDocument() throws IOException {
-        FileWriter writer = new FileWriter(path);
-        writer.write(JSONStringer.valueToString(content));
+    public void save() {
+        try {
+            FileWriter writer = new FileWriter(path);
+            writer.write(JSONStringer.valueToString(content));
+        } catch (IOException ioe) {
+            System.out.println("Error while saving the file!");
+            ioe.printStackTrace();
+        }
     }
 
     public String getPath() {
