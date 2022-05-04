@@ -11,6 +11,7 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Application {
@@ -38,6 +39,19 @@ public class Application {
                 "Test",
                 "C:\\Users\\pietr\\Desktop\\test",
                 "This is a test", new User("vittorio", "vittorio@gmail.com", "ciano"));
+
+        Warehouse warehouse = app.getWarehouse(0);
+
+        LinkedList<User> users = new LinkedList<>();
+
+        users.add(new User("vittorio", "effy", "vitto"));
+        users.add(new User("renzo", "venice", "ree"));
+        users.add(new User("enzuccio", "fuffy", "enzu"));
+
+        warehouse.saveVersion(
+                    "Test Version",
+                    users
+                );
     }
 
     /**
@@ -56,53 +70,7 @@ public class Application {
      * @throws InvalidPathException If the path is not valid
      * @throws DirectoryCreationException If the directory cannot be created
      */
-    public void createWarehouse(String name, String path, String description, User owner)
-            throws InvalidPathException, DirectoryCreationException {
-
-        // If path does not exist, create it
-        Path warehousePath = Paths.get(path);
-        if (!warehousePath.toFile().exists()) {
-            warehousePath.toFile().mkdir();
-        }
-
-        /*
-         Directory structure creation
-        */
-
-        // Check if the path has a ".lit" directory inside
-        if (Paths.get(path + "/.lit").toFile().exists()) {
-            throw new InvalidPathException(path, "The path already contains a .lit directory");
-        }
-
-        // Create the .lit directory if error occurs delete the directory
-        if (Paths.get(path + "/.lit").toFile().mkdir()) {
-            // Create the settings, versions and database directory inside the .lit directory
-            Paths.get(path + "/.lit/versions").toFile().mkdir();
-            Paths.get(path + "/.lit/database").toFile().mkdir();
-
-        } else {
-            // Delete the directory
-            Paths.get(path + "/.lit").toFile().delete();
-            // Throw an exception
-            throw new DirectoryCreationException(path, "Error while creating the .lit directory");
-        }
-
-        /*
-         Configuration files creation
-        */
-
-        try {
-            JSONDocument<JSONObject> settings = new JSONDocument<>(path + "/.lit/database/config.json");
-            JSONDocument<JSONArray> versions = new JSONDocument<>(path + "/.lit/database/versions.json");
-            JSONDocument<JSONObject> stats = new JSONDocument<>(path + "/.lit/database/stats.json");
-
-        } catch (IOException ioe) {
-            // Log the error
-            System.out.println("Error while creating the config file");
-            // Delete the directory
-            Paths.get(path + "/.lit").toFile().delete();
-        }
-
+    public void createWarehouse(String name, String path, String description, User owner) throws InvalidPathException, DirectoryCreationException {
         this.openedWarehouses.add(new Warehouse(name, path, description, owner));
     }
 
@@ -111,12 +79,11 @@ public class Application {
      * @param path The path of the warehouse to open
      */
     public void openWarehouse(String path) {
-        // TODO: read all the files from the warehouse and create the warehouse object
-
+        this.openedWarehouses.add(new Warehouse(path));
     }
 
     public void closeWarehouse(int id) {
-        // TODO: close the warehouse and save all the changes
+
     }
 
     public List<Warehouse> getOpenedWarehouses() {
