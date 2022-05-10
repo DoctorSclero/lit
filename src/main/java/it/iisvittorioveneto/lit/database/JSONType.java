@@ -1,6 +1,6 @@
 package it.iisvittorioveneto.lit.database;
 
-public enum JSONTypes {
+public enum JSONType {
     JSONObject,
     JSONArray
 }
