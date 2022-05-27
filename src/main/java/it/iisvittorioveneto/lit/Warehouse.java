@@ -155,7 +155,12 @@ public class Warehouse {
         }
     }
 
-    public void importFile(String filePath) {
+    public void importFile(String filePath) throws IOException {
+
+        File src = new File(filePath);
+        File dest = new File(this.getPath());
+
+        Files.copy(src.toPath(), dest.toPath());
 
     }
 
