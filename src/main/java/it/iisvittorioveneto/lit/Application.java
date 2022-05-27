@@ -78,6 +78,8 @@ public class Application {
     }
 
     public void closeWarehouse(int id) {
+        this.getWarehouse(id).save();
+        this.openedWarehouses.remove(id);
 
     }
 
