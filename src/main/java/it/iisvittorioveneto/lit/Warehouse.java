@@ -176,7 +176,9 @@ public class Warehouse {
     }
 
     public void save(){
-
+        settingsDB.save();
+        statsDB.save();
+        versionsDB.save();
     }
 
     public void exportWarehouse() {
