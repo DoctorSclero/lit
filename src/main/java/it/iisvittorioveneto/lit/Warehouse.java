@@ -13,6 +13,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
@@ -157,10 +158,10 @@ public class Warehouse {
 
     public void importFile(String filePath) throws IOException {
 
-        File src = new File(filePath);
-        File dest = new File(this.getPath());
+        File sourceFile = new File(filePath);
+        File destinationFile = new File(this.getPath());
 
-        Files.copy(src.toPath(), dest.toPath());
+        Files.copy(sourceFile.toPath(), destinationFile.toPath());
 
     }
 
@@ -176,8 +177,28 @@ public class Warehouse {
 
     }
 
-    public void getFileStats() {
+    public long getFileSize(String fileName){
+        Path filePath = Paths.get(fileName);
 
+        long bytes = Files.size(path);
+
+        return bytes;
+    }
+
+
+
+    public String getFileStats(String fileName) {
+        String res, contributors;
+        long fileSize;
+
+
+        fileSize = this.getFileSize(fileName);
+
+
+        res = "file selected = " + fileName +
+                "file size = " fileSize +
+                "file contributors" + contributors;
+        return res;
     }
 
     public void save(){
