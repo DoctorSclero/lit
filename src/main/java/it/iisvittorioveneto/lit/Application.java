@@ -83,6 +83,12 @@ public class Application {
 
     }
 
+    public String getWareHouseInfo(int id){
+        String res = "";
+
+        return res;
+    }
+
     public List<Warehouse> getOpenedWarehouses() {
         return openedWarehouses;
     }
