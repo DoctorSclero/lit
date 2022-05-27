@@ -1,11 +1,9 @@
 package it.iisvittorioveneto.lit.database;
 
-import org.json.JSONObject;
 import org.json.JSONStringer;
 import org.json.JSONTokener;
 
 import java.io.*;
-import java.util.function.Supplier;
 
 /**
  * * Check
@@ -19,15 +17,13 @@ import java.util.function.Supplier;
 public class JSONDocument<T> {
 
     private String path;
-    private Object content;
-    private Class<T> type;
+    private T content;
 
     public JSONDocument(String path) throws IOException {
-
         this.path = path;
 
         // check if file exists and is readable
-        if ( !(new File(path).exists())  ) {
+        if (!(new File(path).exists())) {
             new File(path).createNewFile();
         }
 
@@ -40,11 +36,11 @@ public class JSONDocument<T> {
             // Parse the JSON file
             JSONTokener tokener = new JSONTokener(reader);
             if (tokener.more()) {
-                content = tokener.nextValue();
+                content = (T) tokener.nextValue();
             }
 
-        } catch (FileNotFoundException ignored) {}
-
+        } catch (FileNotFoundException ignored) {
+        }
     }
 
     public void save() {
@@ -62,7 +58,12 @@ public class JSONDocument<T> {
     }
 
     public T getContent() {
-        return (T) content;
+        return content;
     }
 
+    public void setContent(T content) {
+        this.content = content;
+    }
 }
+
+
