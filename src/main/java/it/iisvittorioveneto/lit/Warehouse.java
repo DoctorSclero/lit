@@ -174,6 +174,10 @@ public class Warehouse {
 
     }
 
+    public void save(){
+
+    }
+
     public void exportWarehouse() {
 
     }

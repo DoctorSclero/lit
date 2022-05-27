@@ -84,6 +84,8 @@ public class Application {
 
     public void closeWarehouse(int id) {
 
+        this.openedWarehouses.remove(id);
+
     }
 
     public List<Warehouse> getOpenedWarehouses() {
