@@ -10,16 +10,17 @@ public class CLI {
      * Contains the logic of the program and
      * the cli menu
      */
-    public static void main() {
+    public static void main(String args[]) {
         CLI cli = new CLI();
 
         System.out.flush();
         int input = -1;
-        while(input != 0) {
-            System.out.println(cli.menu0());
+        while (input != 0) {
+            System.out.println(cli.mainMenu());
             System.out.print("Scelta: ");
             input = Integer.parseInt(System.console().readLine());
-            switch(input){
+            Integer inputId = null;
+            switch (input) {
                 case 1:
                     //Create Warehouse
                     System.out.flush();
@@ -58,9 +59,27 @@ public class CLI {
 
                     System.out.flush();
 
-                    System.out.println("Magazzino aperto: " + Application.getInstance().openWarehouse(path));
+                    Application.getInstance().openWarehouse(path);
+                    System.out.println("Magazzino aperto: " + path);
+                    try{
+                        Thread.sleep(1000);
+                    }catch (InterruptedException ignored) {}
+                    inputId = Application.getInstance().getOpenedWarehouses().size()-1;
+                case 4:
+
+                    //List all opened warehouses
+                    System.out.flush();
+                    if(inputId == null){
+                        System.out.println(cli.listOpenedWarehouses(Application.getInstance().getOpenedWarehouses()));
+                        System.out.println("Inserisci id del magazzino da gestire: ");
+                        inputId = Integer.parseInt(System.console().readLine());
+                    }
+
+                    System.out.flush();
+
                     int input1 = -1;
-                    while(input1 != 0) {
+                    while (input1 != 0) {
+                        System.out.println("Id del magazzino: " + inputId);
                         System.out.println(cli.wareHouseMenu());
                         System.out.println("Scelta: ");
                         input = Integer.parseInt(System.console().readLine());
@@ -70,13 +89,16 @@ public class CLI {
                                 System.out.flush();
 
                                 System.out.println("Path: ");
-                                String path1 = System.console().readLine();
+                                String importPath = System.console().readLine();
 
-                                Application.getInstance().importFile(path1);
+                                //Application.getInstance().importFile(importPath);
                                 break;
                             case 2:
                                 //Save Version
                                 System.out.flush();
+                                System.out.println("Inserire il nome della versione da salvare: ");
+                                String name = System.console().readLine();
+                                Application.getInstance().getWarehouse(inputId).saveVersion(name, null);
                                 break;
                             case 3:
                                 //Restore Version
@@ -97,9 +119,8 @@ public class CLI {
                             case 0:
                                 //Go Back
                                 System.out.flush();
+
                                 break;
-                            default:
-                                System.out.flush();
                         }
                     }
                     break;
@@ -112,12 +133,7 @@ public class CLI {
                     int id = Integer.parseInt(System.console().readLine());
                     Application.getInstance().closeWarehouse(id);
                     break;
-                case 4:
-                    //List all opened warehouses
-                    System.out.flush();
 
-                    System.out.println(cli.listOpenedWarehouses(Application.getInstance().getOpenedWarehouses()));
-                    break;
                 case 0:
                     System.out.flush();
                     System.out.println("Arrivederci!");
@@ -127,11 +143,10 @@ public class CLI {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
                     break;
             }
         }
-        System.exit(0);
+            System.exit(0);
     }
 
     /**
@@ -139,7 +154,7 @@ public class CLI {
      * 0 closes the program
      * @return String representing the main menu
      */
-    private String menu0(){
+    private String mainMenu(){
         StringBuilder strb = new StringBuilder();
         strb.append("╔══════════════════════════════════════════════════════╗\n");
         strb.append("║ 1. Crea un nuovo Magazzino                           ║\n");
