@@ -126,7 +126,7 @@ public class Warehouse {
             FileFilter fileFilter = (file) -> !file.getName().equals(".lit");
             File[] versionContent = Paths.get(this.getPath()).toFile().listFiles(fileFilter);
 
-            Version version = new Version(UUID.randomUUID().toString(), name, contributors);
+            Version version = new Version(name, contributors);
 
             // Storing the version in the database
             versionsDB.getContent();
