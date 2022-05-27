@@ -1,15 +1,10 @@
 package it.iisvittorioveneto.lit;
 
-import it.iisvittorioveneto.lit.database.JSONDocument;
 import it.iisvittorioveneto.lit.exceptions.DirectoryCreationException;
 import it.iisvittorioveneto.lit.model.User;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

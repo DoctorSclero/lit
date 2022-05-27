@@ -1,6 +1,7 @@
 package it.iisvittorioveneto.lit;
 
 import it.iisvittorioveneto.lit.database.JSONDocument;
+import it.iisvittorioveneto.lit.database.JSONType;
 import it.iisvittorioveneto.lit.exceptions.DirectoryCreationException;
 import it.iisvittorioveneto.lit.model.User;
 import it.iisvittorioveneto.lit.model.Version;
@@ -125,7 +126,7 @@ public class Warehouse {
             FileFilter fileFilter = (file) -> !file.getName().equals(".lit");
             File[] versionContent = Paths.get(this.getPath()).toFile().listFiles(fileFilter);
 
-            Version version = new Version(UUID.randomUUID().toString(), name, contributors);
+            Version version = new Version(name, contributors);
 
             // Storing the version in the database
             versionsDB.getContent();
@@ -189,7 +190,7 @@ public class Warehouse {
 
     public void setName(String name) {
         if (settingsDB.getContent() == null) {
-            settingsDB.getContent() = new JSONObject();
+            settingsDB.setContent(new JSONObject());
         }
         settingsDB.getContent().put("name", name);
         settingsDB.save();
@@ -200,6 +201,9 @@ public class Warehouse {
     }
 
     public void setPath(String path) {
+        if (settingsDB.getContent() == null) {
+            settingsDB.setContent(new JSONObject());
+        }
         settingsDB.getContent().put("path", path);
         settingsDB.save();
     }
@@ -209,6 +213,9 @@ public class Warehouse {
     }
 
     public void setDescription(String description) {
+        if (settingsDB.getContent() == null) {
+            settingsDB.setContent(new JSONObject());
+        }
         settingsDB.getContent().put("description", description);
         settingsDB.save();
     }
@@ -222,6 +229,10 @@ public class Warehouse {
     }
 
     public void setOwner(User owner) {
+        if (settingsDB.getContent() == null) {
+            settingsDB.setContent(new JSONObject());
+        }
+        
         JSONObject user = new JSONObject();
         user.put("fullname", owner.getFullName());
         user.put("username", owner.getUsername());
