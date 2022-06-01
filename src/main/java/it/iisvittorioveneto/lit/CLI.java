@@ -3,9 +3,9 @@ package it.iisvittorioveneto.lit;
 import it.iisvittorioveneto.lit.model.User;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class CLI {
-
     /**
      * Contains the logic of the program and
      * the cli menu
@@ -13,39 +13,44 @@ public class CLI {
     public static void main(String args[]) {
         CLI cli = new CLI();
 
-        System.out.flush();
+        clearConsole();
         int input = -1;
+        Scanner scanner = new Scanner(System.in);
         while (input != 0) {
-            System.out.println(cli.mainMenu());
-            System.out.print("Scelta: ");
-            input = Integer.parseInt(System.console().readLine());
+            while(input < 0 || input > 4){
+                System.out.println(cli.mainMenu());
+                System.out.print("Scelta: ");
+                try{
+                    input = Integer.parseInt(scanner.nextLine());
+                    if(input < 0 || input > 4)
+                        throw new NumberFormatException();
+                }catch(NumberFormatException nfe){
+                    System.out.println("Input non valido");
+                    try{
+                        Thread.sleep(1000);
+                    }catch(InterruptedException ie){}
+                    clearConsole();
+                }
+            }
             Integer inputId = null;
             switch (input) {
                 case 1:
                     //Create Warehouse
-                    System.out.flush();
+                    clearConsole();
                     System.out.println("Inserisci nome del magazzino: ");
-                    String wareHouseName = System.console().readLine();
+                    String wareHouseName = scanner.nextLine();
 
-                    System.out.flush();
+                    System.out.println("\nInserisci percorso di creazione magazzino: ");
+                    String wareHousePath = scanner.nextLine();
 
-                    System.out.println("Inserisci percorso di creazione magazzino: ");
-                    String wareHousePath = System.console().readLine();
+                    System.out.println("\nInserisci descrizione magazzino: ");
+                    String wareHouseDescription = scanner.nextLine();
 
-                    System.out.flush();
+                    System.out.println("\nInserisci email del creatore: ");
+                    String email = scanner.nextLine();
 
-                    System.out.println("Inserisci descrizione magazzino: ");
-                    String wareHouseDescription = System.console().readLine();
-
-                    System.out.flush();
-
-                    System.out.println("Inserisci email del creatore: ");
-                    String email = System.console().readLine();
-
-                    System.out.flush();
-
-                    System.out.println("Inserisci nome completo del creatore: ");
-                    String fullName = System.console().readLine();
+                    System.out.println("\nInserisci nome completo del creatore: ");
+                    String fullName = scanner.nextLine();
 
                     User user = new User(fullName, email, System.getProperty("user.name"));
 
@@ -53,11 +58,11 @@ public class CLI {
                     break;
                 case 2:
                     //Open Warehouse
-                    System.out.flush();
+                    clearConsole();
                     System.out.println("Inserisci percorso di apertura magazzino: ");
-                    String path = System.console().readLine();
+                    String path = scanner.nextLine();
 
-                    System.out.flush();
+                    clearConsole();
 
                     Application.getInstance().openWarehouse(path);
                     System.out.println("Magazzino aperto: " + path);
@@ -68,57 +73,71 @@ public class CLI {
                 case 4:
 
                     //List all opened warehouses
-                    System.out.flush();
+                    clearConsole();
                     if(inputId == null){
                         System.out.println(cli.listOpenedWarehouses(Application.getInstance().getOpenedWarehouses()));
                         System.out.println("Inserisci id del magazzino da gestire: ");
-                        inputId = Integer.parseInt(System.console().readLine());
+                        inputId = Integer.parseInt(scanner.nextLine());
                     }
 
-                    System.out.flush();
+                    clearConsole();
 
                     int input1 = -1;
                     while (input1 != 0) {
-                        System.out.println("Id del magazzino: " + inputId);
-                        System.out.println(cli.wareHouseMenu());
-                        System.out.println("Scelta: ");
-                        input = Integer.parseInt(System.console().readLine());
+                        while(input1 < 0 || input > 6){
+                            clearConsole();
+                            System.out.println("Id del magazzino: " + inputId);
+                            System.out.println(cli.wareHouseMenu());
+                            System.out.println("Scelta: ");
+                            try{
+                                input = Integer.parseInt(scanner.nextLine());
+                                if(input1 < 0 || input > 6)
+                                    throw new NumberFormatException();
+                            }catch(NumberFormatException nfe){
+                                try{
+                                    Thread.sleep(1000);
+                                }catch(InterruptedException ie){}
+                            }
+                        }
                         switch (input) {
                             case 1:
                                 //Import File
-                                System.out.flush();
+                                clearConsole();
 
                                 System.out.println("Path: ");
-                                String importPath = System.console().readLine();
+                                String importPath = scanner.nextLine();
 
                                 //Application.getInstance().importFile(importPath);
                                 break;
                             case 2:
                                 //Save Version
-                                System.out.flush();
-                                System.out.println("Inserire il nome della versione da salvare: ");
-                                String name = System.console().readLine();
-                                Application.getInstance().getWarehouse(inputId).saveVersion(name, null);
+                                clearConsole();
+                                System.out.println("Inserire il nome della versione: ");
+                                String versName = scanner.nextLine();
+                                Application.getInstance().getWarehouse(inputId).saveVersion(versName, null);
                                 break;
                             case 3:
                                 //Restore Version
-                                System.out.flush();
+                                clearConsole();
+                                System.out.println("Inserire il nome della versione: ");
+                                String resName = scanner.nextLine();
+                                //Application.getInstance().getWarehouse(inputId).restoreVersion(resName);
                                 break;
                             case 4:
                                 //Print Statistics
-                                System.out.flush();
+                                clearConsole();
                                 break;
                             case 5:
                                 //Print Warehouse info
-                                System.out.flush();
+                                clearConsole();
                                 break;
                             case 6:
                                 //Export Warehouse
-                                System.out.flush();
+                                clearConsole();
                                 break;
                             case 0:
                                 //Go Back
-                                System.out.flush();
+                                clearConsole();
 
                                 break;
                         }
@@ -126,16 +145,16 @@ public class CLI {
                     break;
                 case 3:
                     //Close Warehouse
-                    System.out.flush();
+                    clearConsole();
 
                     System.out.println(cli.listOpenedWarehouses(Application.getInstance().getOpenedWarehouses()));
                     System.out.println("Inserisci id del magazzino da chiudere: ");
-                    int id = Integer.parseInt(System.console().readLine());
+                    int id = Integer.parseInt(scanner.nextLine());
                     Application.getInstance().closeWarehouse(id);
                     break;
 
                 case 0:
-                    System.out.flush();
+                    clearConsole();
                     System.out.println("Arrivederci!");
 
                     try {
@@ -215,5 +234,24 @@ public class CLI {
         strb.append("║ 0. Torna Indietro                                    ║\n");
         strb.append("╚══════════════════════════════════════════════════════╝\n");
         return strb.toString();
+    }
+
+    /**
+     * Clears the console
+     */
+    public final static void clearConsole() {
+        try {
+            final String os = System.getProperty("os.name");
+
+            if (os.contains("Windows"))
+            {
+                Runtime.getRuntime().exec("cls");
+            }
+            else
+            {
+                Runtime.getRuntime().exec("clear");
+            }
+        }
+        catch (final Exception e) {}
     }
 }
