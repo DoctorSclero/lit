@@ -2,6 +2,7 @@ package it.iisvittorioveneto.lit;
 
 import it.iisvittorioveneto.lit.model.User;
 
+import java.awt.desktop.AppForegroundListener;
 import java.util.List;
 import java.util.Scanner;
 
@@ -107,7 +108,7 @@ public class CLI {
                                 System.out.println("Path: ");
                                 String importPath = scanner.nextLine();
 
-                                //Application.getInstance().importFile(importPath);
+                                Application.getInstance().importFile(importPath);
                                 break;
                             case 2:
                                 //Save Version
@@ -121,19 +122,59 @@ public class CLI {
                                 clearConsole();
                                 System.out.println("Inserire il nome della versione: ");
                                 String resName = scanner.nextLine();
-                                //Application.getInstance().getWarehouse(inputId).restoreVersion(resName);
+                                Application.getInstance().getWarehouse(inputId).restoreVersion(resName);
                                 break;
                             case 4:
                                 //Print Statistics
                                 clearConsole();
+                                System.out.println(cli.statisticsMenu());
+
+                                int input2 = -1;
+                                System.out.println("Scelta: ");
+                                while(input2 < 0 || input2 > 3){
+                                    try{
+                                        input2 = Integer.parseInt(scanner.nextLine());
+                                        if(input2 < 0 || input2 > 3)
+                                            throw new NumberFormatException();
+                                    }catch(NumberFormatException nfe){
+                                        System.out.println("Input non valido");
+                                        try{
+                                            Thread.sleep(1000);
+                                        }catch(InterruptedException ie){}
+                                        clearConsole();
+                                    }
+                                }
+
+                                switch (input2) {
+                                    case 1:
+                                        //Print generic statistics
+                                        clearConsole();
+                                        System.out.println(Application.getInstance().getWarehouse(inputId).getGenericStatistics());
+                                        break;
+                                    case 2:
+                                        //Print collaborators
+                                        clearConsole();
+                                        System.out.println(Application.getInstance().getWarehouse(inputId).getCollaborators());
+                                        break;
+                                    case 3:
+                                        //Print file statistics
+                                        clearConsole();
+                                        System.out.println(Application.getInstance().getWarehouse(inputId).getFileStatistics());
+                                        break;
+                                }
+
                                 break;
                             case 5:
                                 //Print Warehouse info
                                 clearConsole();
+                                Application.getInstance().getWarehouse(inputId).printInfo();
                                 break;
                             case 6:
                                 //Export Warehouse
                                 clearConsole();
+                                System.out.println("Inserire il percorso di esportazione: ");
+                                String exportPath = scanner.nextLine();
+                                Application.getInstance().getWarehouse(inputId).exportWarehouse(exportPath);
                                 break;
                             case 0:
                                 //Go Back
