@@ -156,12 +156,16 @@ public class Warehouse {
         }
     }
 
-    public void importFile(String filePath) throws IOException {
+    public void importFile(String filePath){
 
         File sourceFile = new File(filePath);
         File destinationFile = new File(this.getPath());
 
-        Files.copy(sourceFile.toPath(), destinationFile.toPath());
+        try {
+            Files.copy(sourceFile.toPath(), destinationFile.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -171,17 +175,17 @@ public class Warehouse {
 
     public StringBuilder getCollaborators() {
         StringBuilder res = new StringBuilder();
-        res.append(versionsDB.getContent())
+        return res;
     }
 
     public void getVersions() {
 
     }
 
-    public long getFileSize(String fileName){
+    public long getFileSize(String fileName) throws IOException {
         Path filePath = Paths.get(fileName);
 
-        long bytes = Files.size(path);
+        long bytes = Files.size(filePath);
 
         return bytes;
     }
@@ -194,10 +198,12 @@ public class Warehouse {
         long fileSize;
 
 
-
-        fileSize = this.getFileSize(fileName);
+        try {
+            fileSize = this.getFileSize(fileName);
 
         res.append("file selected = ").append(fileName).append("file size = ").append(fileSize).append("file contributors").append(this.getCollaborators());
+
+        } catch (IOException e) {e.printStackTrace();}
 
         return res;
     }
