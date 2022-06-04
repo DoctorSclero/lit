@@ -169,8 +169,9 @@ public class Warehouse {
 
     }
 
-    public void getCollaborators() {
-
+    public StringBuilder getCollaborators() {
+        StringBuilder res = new StringBuilder();
+        res.append(versionsDB.getContent())
     }
 
     public void getVersions() {
@@ -187,17 +188,17 @@ public class Warehouse {
 
 
 
-    public String getFileStats(String fileName) {
-        String res, contributors;
+    public StringBuilder getFileStats(String fileName) {
+        StringBuilder res =  new StringBuilder();
+        String contributors;
         long fileSize;
+
 
 
         fileSize = this.getFileSize(fileName);
 
+        res.append("file selected = ").append(fileName).append("file size = ").append(fileSize).append("file contributors").append(this.getCollaborators());
 
-        res = "file selected = " + fileName +
-                "file size = " fileSize +
-                "file contributors" + contributors;
         return res;
     }
 
