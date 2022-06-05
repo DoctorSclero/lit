@@ -129,7 +129,8 @@ public class Warehouse {
             Version version = new Version(name, contributors);
 
             // Storing the version in the database
-            versionsDB.getContent();
+            versionsDB.getContent().put(version.toJSONObject());
+            versionsDB.save();
 
             // Creating the .lit/versions/{versionID} folder
             File versionDir = Paths.get(this.getPath(), "/.lit/versions/", version.getId()).toFile();
