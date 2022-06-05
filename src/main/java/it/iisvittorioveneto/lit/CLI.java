@@ -18,10 +18,9 @@ public class CLI {
     public static void main(String args[]) {
         clearConsole();
         int inputMainMenu = -1;
-        Scanner scanner = new Scanner(System.in);
         while (inputMainMenu != 0) {
             inputMainMenu = secureIntInput(0, 4, cli.mainMenu());
-            Integer inputId = null;
+            int inputId = -1;
             switch (inputMainMenu) {
                 case 1:
                     cliCreateWarehouse();
@@ -198,7 +197,7 @@ public class CLI {
      * Method used to open a warehouse
      * @param inputId
      */
-    private static void cliOpenWarehouse(Integer inputId){
+    private static void cliOpenWarehouse(int inputId){
         //Open Warehouse
         clearConsole();
         System.out.println("Inserisci percorso di apertura magazzino: ");
@@ -218,13 +217,20 @@ public class CLI {
      * Method used to enter the warehouse's management menu
      * @param inputId
      */
-    private static void cliManageWarehouse(Integer inputId){
+    private static void cliManageWarehouse(int inputId){
         //List all opened warehouses
         clearConsole();
-        while(inputId == null || Application.getInstance().getWarehouse(inputId) == null){
+        while(Application.getInstance().getWarehouse(inputId) == null){
             System.out.println(cli.listOpenedWarehouses(Application.getInstance().getOpenedWarehouses()));
             System.out.println("Inserisci id del magazzino da gestire: ");
             inputId = Integer.parseInt(scanner.nextLine());
+            if(Application.getInstance().getWarehouse(inputId) == null){
+                System.out.println("Id non valido, inserisci un id valido: ");
+                try{
+                    Thread.sleep(1000);
+                }catch (InterruptedException ignored) {}
+                clearConsole();
+            }
         }
 
         clearConsole();
