@@ -2,9 +2,11 @@ package it.iisvittorioveneto.lit;
 
 import it.iisvittorioveneto.lit.exceptions.DirectoryCreationException;
 import it.iisvittorioveneto.lit.model.User;
+import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +32,9 @@ public class Application {
      */
     public static void main(String[] args) throws IOException {
         Application app = new Application();
+
+        FileUtils.deleteDirectory(Paths.get("C:\\Users\\pietr\\Desktop\\lit-testing").toFile());
+
         app.createWarehouse(
                 "Test",
                 "C:\\Users\\pietr\\Desktop\\lit-testing",
@@ -39,7 +44,7 @@ public class Application {
 
         Warehouse warehouse = app.getWarehouse(0);
 
-        /*
+
         LinkedList<User> users = new LinkedList<>();
 
         users.add(new User("vittorio", "effy", "vitto"));
@@ -49,7 +54,7 @@ public class Application {
         warehouse.saveVersion(
                     "Test Version",
                     users
-                );*/
+                );
     }
 
     /**
@@ -80,13 +85,13 @@ public class Application {
         this.openedWarehouses.add(new Warehouse(path));
     }
 
-    public void closeWarehouse(Integer id) {
+    public void closeWarehouse(int id) {
         this.getWarehouse(id).save();
         this.openedWarehouses.remove(id);
 
     }
 
-    public String getWareHouseInfo(Integer id){
+    public String getWareHouseInfo(int id){
         String res = "";
 
         return res;
@@ -96,8 +101,8 @@ public class Application {
         return openedWarehouses;
     }
 
-    public Warehouse getWarehouse(Integer id) {
-        return (id == null ? openedWarehouses.get(id) : null);
+    public Warehouse getWarehouse(int id) {
+        return openedWarehouses.get(id);
     }
 
 }

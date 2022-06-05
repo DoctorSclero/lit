@@ -118,39 +118,42 @@ public class Warehouse {
      */
     public void saveVersion(String name, List<User> contributors) {
 
-        if (Paths.get(this.getPath()).toFile().exists()) {
-            // Log
-            System.out.println("Saving version...");
+        // If the version directory cannot be created throw an exception
+        if (!Paths.get(this.getPath()).toFile().exists()) { return; }
 
-            // Selecting all files and directories except the .lit folder
-            FileFilter fileFilter = (file) -> !file.getName().equals(".lit");
-            File[] versionContent = Paths.get(this.getPath()).toFile().listFiles(fileFilter);
+        // Log
+        System.out.println("Saving version...");
 
-            Version version = new Version(name, contributors);
+        // Selecting all files and directories except the .lit folder
+        FileFilter fileFilter = (file) -> !file.getName().equals(".lit");
+        File[] versionContent = Paths.get(this.getPath()).toFile().listFiles(fileFilter);
 
-            // Storing the version in the database
-            versionsDB.getContent();
+        Version version = new Version(name, contributors);
 
-            // Creating the .lit/versions/{versionID} folder
-            File versionDir = Paths.get(this.getPath(), "/.lit/versions/", version.getId()).toFile();
+        // Storing the version in the database
+        versionsDB.getContent().put(version.toJSONObject());
+        versionsDB.save();
 
-            if (versionDir.mkdir()) {
-                if (versionContent != null) {
-                    for (File file : versionContent) {
-                        try {
-                            System.out.println("Copying file " + file.getName() + "...");
-                            Files.copy(
-                                    file.toPath(),
-                                    Paths.get(versionDir.getPath(), "/", file.getName()),
-                                    REPLACE_EXISTING
-                            );
-                        } catch (IOException e) {
-                            System.out.println("Error while copying file: " + e.getMessage());
-                        }
-                    }
+        // Creating the .lit/versions/{versionID} folder
+        File versionDir = Paths.get(this.getPath(), "/.lit/versions/", version.getId()).toFile();
+
+        if (!versionDir.mkdir()) {
+            System.out.println("Error while creating version folder");
+            return;
+        }
+
+        if (versionContent != null) {
+            for (File file : versionContent) {
+                try {
+                    System.out.println("Copying file " + file.getName() + "...");
+                    Files.copy(
+                            file.toPath(),
+                            Paths.get(versionDir.getPath(), "/", file.getName()),
+                            REPLACE_EXISTING
+                    );
+                } catch (IOException e) {
+                    System.out.println("Error while copying file: " + e.getMessage());
                 }
-            } else {
-                System.out.println("Error while creating version folder");
             }
         }
     }
@@ -219,11 +222,7 @@ public class Warehouse {
     }
 
     public User getOwner() {
-        return new User(
-                settingsDB.getContent().getJSONObject("user").getString("fullname"),
-                settingsDB.getContent().getJSONObject("user").getString("username"),
-                settingsDB.getContent().getJSONObject("user").getString("email")
-        );
+        return new User(settingsDB.getContent().getJSONObject("user"));
     }
 
     public void setOwner(User owner) {
