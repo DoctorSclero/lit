@@ -1,12 +1,13 @@
 package it.iisvittorioveneto.lit;
 
+import it.iisvittorioveneto.lit.database.JSONArrayDocument;
 import it.iisvittorioveneto.lit.database.JSONDocument;
-import it.iisvittorioveneto.lit.database.JSONType;
+import it.iisvittorioveneto.lit.database.JSONObjectDocument;
 import it.iisvittorioveneto.lit.exceptions.DirectoryCreationException;
 import it.iisvittorioveneto.lit.model.User;
 import it.iisvittorioveneto.lit.model.Version;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import it.iisvittorioveneto.lit.database.utils.JSONArray;
+import it.iisvittorioveneto.lit.database.utils.JSONObject;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -15,7 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
@@ -38,9 +38,9 @@ public class Warehouse {
                 try {
 
                     // Read the settings file
-                    settingsDB = new JSONDocument<>(path + "/.lit/database/config.json");
-                    statsDB = new JSONDocument<>(path + "/.lit/database/stats.json");
-                    versionsDB = new JSONDocument<>(path + "/.lit/database/versions.json");
+                    settingsDB = new JSONObjectDocument(Paths.get(path, "/.lit/database/config.json"));
+                    statsDB = new JSONObjectDocument(Paths.get(path, "/.lit/database/stats.json"));
+                    versionsDB = new JSONArrayDocument(Paths.get(path, "/.lit/database/versions.json"));
 
                 } catch (IOException ioe) {
                     // Log the error
@@ -80,9 +80,9 @@ public class Warehouse {
         // Creating the .lit folder structure if error occurs delete the whole directory
         if (
                 !(
-                    Paths.get(path + "/.lit").toFile().mkdir() &&
-                    Paths.get(path + "/.lit/versions").toFile().mkdir() &&
-                    Paths.get(path + "/.lit/database").toFile().mkdir()
+                    Paths.get(path, "/.lit").toFile().mkdir() &&
+                    Paths.get(path, "/.lit/versions").toFile().mkdir() &&
+                    Paths.get(path, "/.lit/database").toFile().mkdir()
                 )
         ) {
             // Delete the directory
@@ -93,9 +93,9 @@ public class Warehouse {
 
         try {
             // Creating the settings, stats and versions files inside the .lit directory and loading them
-            settingsDB = new JSONDocument<>(path + "/.lit/database/config.json");
-            statsDB = new JSONDocument<>(path + "/.lit/database/stats.json");
-            versionsDB = new JSONDocument<>(path + "/.lit/database/versions.json");
+            settingsDB = new JSONObjectDocument(Paths.get(path, "/.lit/database/config.json"));
+            statsDB = new JSONObjectDocument(Paths.get(path, "/.lit/database/stats.json"));
+            versionsDB = new JSONArrayDocument(Paths.get(path, "/.lit/database/versions.json"));
 
             // Setting the name, description and owner of the warehouse
             this.setName(name);
@@ -107,7 +107,7 @@ public class Warehouse {
             // Log the error
             System.out.println("Error while creating the config file");
             // Delete the directory
-            Paths.get(path + "/.lit").toFile().delete();
+            Paths.get(path, "/.lit").toFile().delete();
         }
     }
 
@@ -132,7 +132,7 @@ public class Warehouse {
             versionsDB.getContent();
 
             // Creating the .lit/versions/{versionID} folder
-            File versionDir = Paths.get(this.getPath() + "/.lit/versions/" + version.getId()).toFile();
+            File versionDir = Paths.get(this.getPath(), "/.lit/versions/", version.getId()).toFile();
 
             if (versionDir.mkdir()) {
                 if (versionContent != null) {
@@ -141,7 +141,7 @@ public class Warehouse {
                             System.out.println("Copying file " + file.getName() + "...");
                             Files.copy(
                                     file.toPath(),
-                                    Paths.get(versionDir.getPath() + "/" + file.getName()),
+                                    Paths.get(versionDir.getPath(), "/", file.getName()),
                                     REPLACE_EXISTING
                             );
                         } catch (IOException e) {
@@ -196,9 +196,6 @@ public class Warehouse {
     }
 
     public void setName(String name) {
-        if (settingsDB.getContent() == null) {
-            settingsDB.setContent(new JSONObject());
-        }
         settingsDB.getContent().put("name", name);
         settingsDB.save();
     }
@@ -208,9 +205,6 @@ public class Warehouse {
     }
 
     public void setPath(String path) {
-        if (settingsDB.getContent() == null) {
-            settingsDB.setContent(new JSONObject());
-        }
         settingsDB.getContent().put("path", path);
         settingsDB.save();
     }
@@ -220,9 +214,6 @@ public class Warehouse {
     }
 
     public void setDescription(String description) {
-        if (settingsDB.getContent() == null) {
-            settingsDB.setContent(new JSONObject());
-        }
         settingsDB.getContent().put("description", description);
         settingsDB.save();
     }
@@ -236,15 +227,7 @@ public class Warehouse {
     }
 
     public void setOwner(User owner) {
-        if (settingsDB.getContent() == null) {
-            settingsDB.setContent(new JSONObject());
-        }
-        
-        JSONObject user = new JSONObject();
-        user.put("fullname", owner.getFullName());
-        user.put("username", owner.getUsername());
-        user.put("email", owner.getEmail());
-        settingsDB.getContent().put("user", user);
+        settingsDB.getContent().put("user", owner.toJSONObject());
+        settingsDB.save();
     }
-
 }
