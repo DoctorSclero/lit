@@ -8,11 +8,10 @@ import it.iisvittorioveneto.lit.model.User;
 import it.iisvittorioveneto.lit.model.Version;
 import it.iisvittorioveneto.lit.database.utils.JSONArray;
 import it.iisvittorioveneto.lit.database.utils.JSONObject;
+import it.iisvittorioveneto.lit.utils.Zipper;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
@@ -160,6 +159,11 @@ public class Warehouse {
         }
     }
 
+    /**
+     * Returns the list of all versions of the warehouse
+     * @param filePath The path of the file to be loaded
+     * @throws IOException If the file cannot be loaded
+     */
     public void importFile(String filePath) throws IOException {
 
         File src = new File(filePath);
@@ -237,48 +241,87 @@ public class Warehouse {
 
     }
 
+    /**
+     * Saves all the databases.
+     */
     public void save(){
         settingsDB.save();
         statsDB.save();
         versionsDB.save();
     }
 
-    public void exportWarehouse() {
-
+    /**
+     * Export the warehouse to a zip file
+     * @param exportPath The path of the zip file
+     * @throws IOException If the zip file cannot be created
+     */
+    public void exportWarehouse(String exportPath) throws IOException {
+        Zipper.zipDirectory(this.getPath(), exportPath);
     }
 
-    // Getters and setters
+    /**
+     * Get the name of the warehouse
+     * @return The name of the warehouse
+     */
     public String getName() {
         return settingsDB.getContent().getString("name");
     }
 
+    /**
+     * Set the name of the warehouse
+     * @param name The new name of the warehouse
+     */
     public void setName(String name) {
         settingsDB.getContent().put("name", name);
         settingsDB.save();
     }
 
+    /**
+     * Get the path of the warehouse
+     * @return The path of the warehouse
+     */
     public String getPath() {
         return settingsDB.getContent().getString("path");
     }
 
+    /**
+     * Set the path of the warehouse
+     * @param path The new path of the warehouse
+     */
     public void setPath(String path) {
         settingsDB.getContent().put("path", path);
         settingsDB.save();
     }
 
+    /**
+     * Get the description of the warehouse
+     * @return The description of the warehouse
+     */
     public String getDescription() {
         return settingsDB.getContent().getString("description");
     }
 
+    /**
+     * Set the description of the warehouse
+     * @param description The new description of the warehouse
+     */
     public void setDescription(String description) {
         settingsDB.getContent().put("description", description);
         settingsDB.save();
     }
 
+    /**
+     * Get the owner of the warehouse
+     * @return The owner of the warehouse
+     */
     public User getOwner() {
         return new User(settingsDB.getContent().getJSONObject("user"));
     }
 
+    /**
+     * Set the owner of the warehouse
+     * @param owner The new owner of the warehouse
+     */
     public void setOwner(User owner) {
         settingsDB.getContent().put("user", owner.toJSONObject());
         settingsDB.save();

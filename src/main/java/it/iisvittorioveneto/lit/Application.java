@@ -2,6 +2,7 @@ package it.iisvittorioveneto.lit;
 
 import it.iisvittorioveneto.lit.exceptions.DirectoryCreationException;
 import it.iisvittorioveneto.lit.model.User;
+import it.iisvittorioveneto.lit.utils.Zipper;
 import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class Application {
         //            users
         //        );
 
-        warehouse.restoreVersion("62fefb10-8bf4-41d3-8382-e446d0bf4db8", new User("restore", "restore@restore.it", "restore"));
+        //warehouse.restoreVersion("62fefb10-8bf4-41d3-8382-e446d0bf4db8", new User("restore", "restore@restore.it", "restore"));
     }
 
     /**
