@@ -33,13 +33,11 @@ public class Application {
     public static void main(String[] args) throws IOException {
         Application app = new Application();
 
-        FileUtils.deleteDirectory(Paths.get("C:\\Users\\pietr\\Desktop\\lit-testing").toFile());
+        //FileUtils.deleteDirectory(Paths.get("C:\\Users\\pietr\\Desktop\\lit-testing").toFile());
 
-        app.createWarehouse(
-                "Test",
-                "C:\\Users\\pietr\\Desktop\\lit-testing",
-                "This is a test", new User("vittorio", "vittorio@gmail.com", "ciano"));
-
+        app.openWarehouse("C:\\Users\\pietr\\Desktop\\lit-testing");
+        //app.createWarehouse("lit-test", "C:\\Users\\pietr\\Desktop\\lit-testing", "wow",
+        //        new User("Pietro", "EIfjsdf", "fkajwekddf"));
         //app.openWarehouse("C:\\Users\\pietr\\Desktop\\lit-testing");
 
         Warehouse warehouse = app.getWarehouse(0);
@@ -51,10 +49,12 @@ public class Application {
         users.add(new User("renzo", "venice", "ree"));
         users.add(new User("enzuccio", "fuffy", "enzu"));
 
-        warehouse.saveVersion(
-                    "Test Version",
-                    users
-                );
+        //warehouse.saveVersion(
+        //            "Test Version",
+        //            users
+        //        );
+
+        warehouse.restoreVersion("62fefb10-8bf4-41d3-8382-e446d0bf4db8", new User("restore", "restore@restore.it", "restore"));
     }
 
     /**

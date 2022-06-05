@@ -8,13 +8,34 @@ import org.json.JSONException;
  */
 public class JSONArray extends org.json.JSONArray implements JSONContent {
 
+    /**
+     * This constructor generates a new JSONArray
+     */
+    public JSONArray() {
+        super();
+    }
+
+    public JSONArray(org.json.JSONArray jsonObject) {
+        super(jsonObject.toString());
+    }
+
+    /**
+     * This constructor generates a new JSONArray in order to
+     * fill the JSONDocument content with it.
+     * @param jsonTokener The JSONTokener to read the JSONArray from
+     * @throws JSONException If the JSONArray is not valid
+     */
+    public JSONArray(JSONTokener jsonTokener) throws JSONException {
+        super(jsonTokener);
+    }
+
     @Override
     public JSONObject getJSONObject(int index) throws JSONException {
-        return (JSONObject) super.getJSONObject(index);
+        return new JSONObject(super.getJSONObject(index));
     }
 
     @Override
     public JSONArray getJSONArray(int index) throws JSONException {
-        return (JSONArray) super.getJSONArray(index);
+        return new JSONArray(super.getJSONArray(index));
     }
 }

@@ -8,6 +8,7 @@ import it.iisvittorioveneto.lit.model.User;
 import it.iisvittorioveneto.lit.model.Version;
 import it.iisvittorioveneto.lit.database.utils.JSONArray;
 import it.iisvittorioveneto.lit.database.utils.JSONObject;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
+import java.util.LinkedList;
 import java.util.List;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -167,8 +169,60 @@ public class Warehouse {
 
     }
 
-    public void restoreVersion() {
+    /**
+     * Restores a snapshot of the warehouse
+     * @param versionID The ID of the version to restore
+     * @param user The user who is requesting the version restoration
+     */
+    public void restoreVersion(String versionID, User user) throws IOException {
+        // if there is no version that matches the provided versionID, throw an exception
+        for (int i = 0; i < versionsDB.getContent().length(); i++) {
+            if (versionsDB.getContent().getJSONObject(i).get("id").equals(versionID)) {
+                // Set the user who is restoring the version as contributor of the version
+                LinkedList<User> contributors = new LinkedList<>();
+                contributors.add(user);
+                // Save the current files in a new version
+                saveVersion(
+                        "Reverting the " + versionID + " version",
+                        contributors
+                );
 
+                // Delete the current files
+                FileFilter fileFilter = (file) -> !file.getName().equals(".lit");
+                File[] warehouseContent = Paths.get(this.getPath()).toFile().listFiles(fileFilter);
+
+                if (warehouseContent != null) {
+                    for (File file : warehouseContent) {
+                        if (file.isDirectory()) {
+                            FileUtils.deleteDirectory(file);
+                        } else {
+                            file.delete();
+                        }
+                    }
+                }
+
+                // Restore the version
+                File versionDir = Paths.get(this.getPath(), "/.lit/versions/", versionID).toFile();
+                File[] versionContent = versionDir.listFiles();
+
+                // If there are file in the version to restore
+                if (versionContent != null) {
+                    // Copy each file to the warehouse directory
+                    for (File file : versionContent) {
+                        try {
+                            System.out.println("Copying file " + file.getName() + "...");
+                            Files.copy(
+                                    file.toPath(),
+                                    Paths.get(this.getPath(), "/", file.getName()),
+                                    REPLACE_EXISTING
+                            );
+                        } catch (IOException e) {
+                            System.out.println("Error while copying file: " + e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void getCollaborators() {
