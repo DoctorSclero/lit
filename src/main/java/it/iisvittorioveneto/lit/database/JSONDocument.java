@@ -1,11 +1,11 @@
 package it.iisvittorioveneto.lit.database;
 
 import it.iisvittorioveneto.lit.database.utils.JSONContent;
-import org.json.JSONTokener;
+import it.iisvittorioveneto.lit.database.utils.JSONObject;
+import it.iisvittorioveneto.lit.database.utils.JSONTokener;
 
 import java.io.*;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * ? Are Generic useful in this class or not??
@@ -47,7 +47,7 @@ public abstract class JSONDocument<T extends JSONContent> {
 
                 JSONTokener tokener = new JSONTokener(reader);
                 if (tokener.more()) {
-                    res = (T) tokener.nextValue();
+                    res = (T)tokener.nextJSONContent();
                 }
             } catch (FileNotFoundException ignored) {}
         }
