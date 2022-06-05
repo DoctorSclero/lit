@@ -32,11 +32,14 @@ public class Application {
         Application app = new Application();
         app.createWarehouse(
                 "Test",
-                "C:\\Users\\pietr\\Desktop\\test",
+                "C:\\Users\\pietr\\Desktop\\lit-testing",
                 "This is a test", new User("vittorio", "vittorio@gmail.com", "ciano"));
+
+        //app.openWarehouse("C:\\Users\\pietr\\Desktop\\lit-testing");
 
         Warehouse warehouse = app.getWarehouse(0);
 
+        /*
         LinkedList<User> users = new LinkedList<>();
 
         users.add(new User("vittorio", "effy", "vitto"));
@@ -46,7 +49,7 @@ public class Application {
         warehouse.saveVersion(
                     "Test Version",
                     users
-                );
+                );*/
     }
 
     /**
@@ -77,13 +80,13 @@ public class Application {
         this.openedWarehouses.add(new Warehouse(path));
     }
 
-    public void closeWarehouse(int id) {
+    public void closeWarehouse(Integer id) {
         this.getWarehouse(id).save();
         this.openedWarehouses.remove(id);
 
     }
 
-    public String getWareHouseInfo(int id){
+    public String getWareHouseInfo(Integer id){
         String res = "";
 
         return res;
@@ -93,8 +96,8 @@ public class Application {
         return openedWarehouses;
     }
 
-    public Warehouse getWarehouse(int id) {
-        return openedWarehouses.get(id);
+    public Warehouse getWarehouse(Integer id) {
+        return (id == null ? openedWarehouses.get(id) : null);
     }
 
 }

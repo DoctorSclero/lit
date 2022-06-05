@@ -1,68 +1,88 @@
 package it.iisvittorioveneto.lit.database;
 
-import org.json.JSONStringer;
+import it.iisvittorioveneto.lit.database.utils.JSONContent;
 import org.json.JSONTokener;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
- * * Check
- * * Is it ok to use Java's Generics?
+ * ? Are Generic useful in this class or not??
  */
 
 /**
  * This class represents a JSON document.
  * @param <T> The type of the root element of the document.
  */
-public class JSONDocument<T> {
+public abstract class JSONDocument<T extends JSONContent> {
 
-    private String path;
-    private T content;
+    protected Path path;
+    protected T content;
 
-    public JSONDocument(String path) throws IOException {
+    /**
+     * Initializes a new JSONDocument if file is not on disk,
+     * a new one is created.
+     * @throws IOException If an error occurs while creating the file.
+     */
+    protected JSONDocument(Path path) throws IOException {
+        if (!(path.toFile().exists())) {
+            path.toFile().createNewFile();
+        }
+
         this.path = path;
-
-        // check if file exists and is readable
-        if (!(new File(path).exists())) {
-            new File(path).createNewFile();
-        }
-
-        // Read the json file database at the given path
-        try {
-
-            // Read the JSON file
-            FileReader reader = new FileReader(path);
-
-            // Parse the JSON file
-            JSONTokener tokener = new JSONTokener(reader);
-            if (tokener.more()) {
-                content = (T) tokener.nextValue();
-            }
-
-        } catch (FileNotFoundException ignored) {
-        }
+        this.content = this.read();
     }
 
+    /**
+     * This method reads the JSONDocument from the disk.
+     * @return the JSONContent of the file
+     * @throws IOException If an error occurs while reading the file.
+     */
+    protected T read() throws IOException {
+        T res = null;
+        if (path.toFile().exists()) {
+            try {
+                FileReader reader = new FileReader(path.toFile());
+
+                JSONTokener tokener = new JSONTokener(reader);
+                if (tokener.more()) {
+                    res = (T) tokener.nextValue();
+                }
+            } catch (FileNotFoundException ignored) {}
+        }
+        return res;
+    }
+
+
+    /**
+     * This method saves the JSON Document.
+     */
     public void save() {
         try {
-            FileWriter writer = new FileWriter(path);
-            writer.write(JSONStringer.valueToString(content));
+            FileWriter writer = new FileWriter(path.toFile());
+            writer.write(content.toString());
+            writer.close();
         } catch (IOException ioe) {
             System.out.println("Error while saving the file!");
             ioe.printStackTrace();
         }
     }
 
-    public String getPath() {
+    /**
+     * Get the path of the document.
+     * @return The path of the document.
+     */
+    public Path getPath() {
         return path;
     }
 
+    /**
+     * Get the content of the document.
+     * @return The content of the document.
+     */
     public T getContent() {
         return content;
-    }
-
-    public void setContent(T content) {
-        this.content = content;
     }
 }
 

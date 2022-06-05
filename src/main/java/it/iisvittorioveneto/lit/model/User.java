@@ -2,6 +2,8 @@ package it.iisvittorioveneto.lit.model;
 
 import it.iisvittorioveneto.lit.Warehouse;
 import it.iisvittorioveneto.lit.database.JSONDocument;
+import it.iisvittorioveneto.lit.database.JSONObjectDocument;
+import it.iisvittorioveneto.lit.database.utils.JSONObject;
 
 public class User {
     private String fullName;
@@ -36,6 +38,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public JSONObject toJSONObject() {
+        JSONObject user = new JSONObject();
+        user.put("fullname", fullName);
+        user.put("username", username);
+        user.put("email", email);
+        return user;
     }
 
     @Override
