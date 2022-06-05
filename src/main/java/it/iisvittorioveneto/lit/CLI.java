@@ -53,7 +53,7 @@ public class CLI {
     }
 
     /**
-     * Used to veryfy if the input is valid between bounds
+     * Used to verify if the input is valid between bounds
      * @param min
      * @param max
      * @param output
@@ -221,10 +221,7 @@ public class CLI {
     private static void cliManageWarehouse(Integer inputId){
         //List all opened warehouses
         clearConsole();
-        if(inputId == null){
-
-        }
-        while(Application.getInstance().getWarehouse((int)inputId) == null){
+        while(inputId == null || Application.getInstance().getWarehouse(inputId) == null){
             System.out.println(cli.listOpenedWarehouses(Application.getInstance().getOpenedWarehouses()));
             System.out.println("Inserisci id del magazzino da gestire: ");
             inputId = Integer.parseInt(scanner.nextLine());
