@@ -135,6 +135,35 @@ public class Warehouse {
         versionsDB.getContent().put(version.toJSONObject());
         versionsDB.save();
 
+        // Updating the statistics
+        statsDB.getContent().put("last_version", version.getId());
+
+        JSONArray storedContributors;
+        if (statsDB.getContent().has("contributors"))
+            storedContributors = statsDB.getContent().getJSONArray("contributors");
+        else
+            storedContributors = new JSONArray();
+
+        for (User contributor : contributors) {
+            // If there are stored contributors
+            if (storedContributors.length() > 0) {
+                boolean found = false;
+                // Check if the contributor is already in the list
+                for (int i = 0; i < storedContributors.length() && !found; i++) {
+                    if (storedContributors.getJSONObject(i).get("email").equals(contributor.getEmail())) {
+                        found = true;
+                    }
+                }
+
+                if (!found) storedContributors.put(contributor.toJSONObject());
+            } else {
+                storedContributors.put(contributor.toJSONObject());
+            }
+        }
+
+        statsDB.getContent().put("contributors", storedContributors);
+        statsDB.save();
+
         // Creating the .lit/versions/{versionID} folder
         File versionDir = Paths.get(this.getPath(), "/.lit/versions/", version.getId()).toFile();
 

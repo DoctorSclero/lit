@@ -50,10 +50,17 @@ public class Application {
         users.add(new User("renzo", "venice", "ree"));
         users.add(new User("enzuccio", "fuffy", "enzu"));
 
-        //warehouse.saveVersion(
-        //            "Test Version",
-        //            users
-        //        );
+        warehouse.saveVersion(
+                    "Test Version 1",
+                    users
+                );
+
+        users.add(new User("lancester", "lancester", "lance"));
+
+        warehouse.saveVersion(
+                "Test Version 2",
+                users
+        );
 
         //warehouse.restoreVersion("62fefb10-8bf4-41d3-8382-e446d0bf4db8", new User("restore", "restore@restore.it", "restore"));
     }

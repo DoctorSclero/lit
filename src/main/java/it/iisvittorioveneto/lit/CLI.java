@@ -27,7 +27,7 @@ public class CLI {
      * Contains the logic of the program and
      * the cli menu
      */
-    public static void main(String args[]) {
+    public static void run() {
         // Clears the console before starting
         clearConsole();
         // Render the main menu while it is opened
