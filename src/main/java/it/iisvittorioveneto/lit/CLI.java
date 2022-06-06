@@ -293,7 +293,10 @@ public class CLI {
                 case 4:
                     //Print Statistics
                     clearConsole();
-                    System.out.println(Application.getInstance().getStatistics(inputId));
+                    System.out.println("Statistiche magazzino:\n" +
+                            Application.getInstance().getWarehouse(inputId).getStatistics());
+                    System.out.println("\nPremi invio per continuare...");
+                    scanner.nextLine();
                     break;
                 case 5:
                     //Print Warehouse info

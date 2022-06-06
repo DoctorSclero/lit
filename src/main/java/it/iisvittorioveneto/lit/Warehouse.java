@@ -260,7 +260,17 @@ public class Warehouse {
 
     public String getStatistics() {
         StringBuilder res = new StringBuilder();
-
+        res.append("Numero Versioni Create: ").append(versionsDB.getContent().length()).append("\n");
+        res.append("Ultima Versione: ").append(statsDB.getContent().get("last_version")).append("\n");
+        res.append("Numero Contributori: ").append(statsDB.getContent().getJSONArray("contributors").length()).append("\n");
+        res.append("Contributori:");
+        for (int i = 0; i < statsDB.getContent().getJSONArray("contributors").length(); i++) {
+            User collaborator = new User(statsDB.getContent().getJSONArray("contributors").getJSONObject(i));
+            res.append("\n\tContributor " + (i+1) + "#:")
+                    .append("\n\t\tName: ").append(collaborator.getFullName())
+                    .append("\n\t\tEmail: ").append(collaborator.getEmail())
+                    .append("\n\t\tUsername: ").append(collaborator.getUsername());
+        }
         return res.toString();
     }
 
