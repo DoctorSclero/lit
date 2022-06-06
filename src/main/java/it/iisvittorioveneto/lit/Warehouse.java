@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
@@ -166,10 +167,14 @@ public class Warehouse {
      */
     public void importFile(String filePath) throws IOException {
 
-        File src = new File(filePath);
-        File dest = new File(this.getPath());
+        File sourceFile = new File(filePath);
+        File destinationFile = new File(this.getPath());
 
-        Files.copy(src.toPath(), dest.toPath());
+        try {
+            Files.copy(sourceFile.toPath(), destinationFile.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -229,16 +234,46 @@ public class Warehouse {
         }
     }
 
-    public void getCollaborators() {
+    public StringBuilder getCollaborators() {
+        Object collaborators = settingsDB.getContent().get("collaborators");
 
+        StringBuilder res = new StringBuilder();
+
+        res.append(collaborators);
+
+        return res;
     }
 
     public void getVersions() {
 
     }
 
-    public void getFileStats() {
+    public long getFileSize(String fileName) throws IOException {
+        Path filePath = Paths.get(fileName);
 
+        long bytes = Files.size(filePath);
+
+        return bytes;
+    }
+
+
+
+    public StringBuilder getFileStats(String fileName) {
+        StringBuilder res =  new StringBuilder();
+        String contributors;
+        long fileSize;
+
+
+        try {
+            fileSize = this.getFileSize(fileName);
+
+        res.append("file selected = ").append(fileName)
+                .append("file size = ").append(fileSize)
+                .append("file contributors").append(this.getCollaborators());
+
+        } catch (IOException e) {e.printStackTrace();}
+
+        return res;
     }
 
     /**
