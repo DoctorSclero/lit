@@ -9,7 +9,12 @@ import java.util.Scanner;
 public class CLI {
 
     private static final Scanner scanner = new Scanner(System.in);
+    private static int inputMainMenu;
+    private static int inputId;
+    private static int inputOpenedWarehouses;
     private static CLI cli = new CLI();
+
+
 
     /**
      * Contains the logic of the program and
@@ -17,10 +22,10 @@ public class CLI {
      */
     public static void main(String args[]) {
         clearConsole();
-        int inputMainMenu = -1;
+        inputMainMenu = -1;
         while (inputMainMenu != 0) {
             inputMainMenu = secureIntInput(0, 4, cli.mainMenu());
-            int inputId = -1;
+            inputId = -1;
             switch (inputMainMenu) {
                 case 1:
                     cliCreateWarehouse();
@@ -30,10 +35,29 @@ public class CLI {
                     cliManageWarehouse(inputId);
                     break;
                 case 3:
-                    cliCloseWarehouse();
+                    if(Application.getInstance().getOpenedWarehouses().size() > 0) {
+                        cliCloseWarehouse();
+                    } else {
+                        System.out.println("Nessun magazzino aperto");
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     break;
                 case 4:
-                    cliManageWarehouse(inputId);
+                    if(Application.getInstance().getOpenedWarehouses().size() > 0) {
+                        cliManageWarehouse(inputId);
+                    } else {
+                        System.out.println("Nessun magazzino aperto");
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     break;
                 case 0:
                     clearConsole();
@@ -73,7 +97,6 @@ public class CLI {
                 try{
                     Thread.sleep(1000);
                 }catch(InterruptedException ie){}
-                clearConsole();
             }
         }
         return input;
@@ -122,13 +145,14 @@ public class CLI {
      */
     private String listOpenedWarehouses(List<Warehouse> openedWarehouses) {
         StringBuilder strb = new StringBuilder();
+        int i;
         strb.append("╔══════════════════════════════════════════════════════╗\n");
-        for (int i = 0; i < openedWarehouses.size(); i++) {
+        for (i = 0; i < openedWarehouses.size(); i++) {
             strb.append("║ " + (i + 1) + ". " + openedWarehouses.get(i).getName() + " ║\n");
         }
         strb.append("║                                                      ║\n");
         strb.append("╚══════════════════════════════════════════════════════╝\n");
-        return strb.toString();
+        return (i != 0 ? strb.toString() : null);
     }
 
     /**
@@ -189,8 +213,13 @@ public class CLI {
 
         User user = new User(fullName, email, System.getProperty("user.name"));
 
-        //Application.getInstance().createWarehouse(wareHouseName, wareHousePath, wareHouseDescription, user);
+        Application.getInstance().createWarehouse(wareHouseName, wareHousePath, wareHouseDescription, user);
         System.out.println("\nMagazzino creato con successo");
+
+        try{
+            Thread.sleep(1000);
+        }catch(InterruptedException ie){}
+        clearConsole();
     }
 
     /**
@@ -235,7 +264,7 @@ public class CLI {
 
         clearConsole();
 
-        int inputOpenedWarehouses = -1;
+        inputOpenedWarehouses = -1;
         while (inputOpenedWarehouses != 0) {
 
             inputOpenedWarehouses = secureIntInput(0, 6, "Id del magazzino: " + inputId + "\n" + cli.wareHouseMenu());
@@ -248,7 +277,7 @@ public class CLI {
                     System.out.println("Path: ");
                     String importPath = scanner.nextLine();
 
-                    //Application.getInstance().importFile(importPath);
+                    Application.getInstance().importFile(importPath);
                     System.out.println("File importato");
                     break;
                 case 2:
@@ -256,7 +285,7 @@ public class CLI {
                     clearConsole();
                     System.out.println("Inserire il nome della versione: ");
                     String versName = scanner.nextLine();
-                    //Application.getInstance().getWarehouse(inputId).saveVersion(versName, null);
+                    Application.getInstance().getWarehouse(inputId).saveVersion(versName, null);
                     System.out.println("Versione salvata");
                     break;
                 case 3:
@@ -264,7 +293,7 @@ public class CLI {
                     clearConsole();
                     System.out.println("Inserire il nome della versione: ");
                     String resName = scanner.nextLine();
-                    //Application.getInstance().getWarehouse(inputId).restoreVersion(resName);
+                    Application.getInstance().getWarehouse(inputId).restoreVersion(resName);
                     System.out.println("Versione ripristinata");
                     break;
                 case 4:
@@ -330,14 +359,14 @@ public class CLI {
         //Close Warehouse
         clearConsole();
 
-        //System.out.println(cli.listOpenedWarehouses(Application.getInstance().getOpenedWarehouses()));
+        System.out.println(cli.listOpenedWarehouses(Application.getInstance().getOpenedWarehouses()));
         System.out.println("Inserisci id del magazzino da chiudere: ");
         int id = 0;
         while(Application.getInstance().getWarehouse(id) == null){
             System.out.println("Id non valido, inserisci un id valido: ");
             id = Integer.parseInt(scanner.nextLine());
         }
-        //Application.getInstance().closeWarehouse(id);
+        Application.getInstance().closeWarehouse(id);
         System.out.println("Magazzino chiuso");
     }
 }
