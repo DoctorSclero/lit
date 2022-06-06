@@ -160,22 +160,6 @@ public class CLI {
     }
 
     /**
-     * Prints the statistics menu of the warehouse
-     * 0 goes back to the father menu
-     * @return String representation of the statistics menu
-     */
-    private String statisticsMenu(){
-        StringBuilder strb = new StringBuilder();
-        strb.append("╔══════════════════════════════════════════════════════╗\n");
-        strb.append("║ 1. Visualizza Statistiche Generali                   ║\n");
-        strb.append("║ 2. Visualizza Collaboratori                          ║\n");
-        strb.append("║ 3. Visualizza Statisctiche File                      ║\n");
-        strb.append("║ 0. Torna Indietro                                    ║\n");
-        strb.append("╚══════════════════════════════════════════════════════╝\n");
-        return strb.toString();
-    }
-
-    /**
      * This method clears the console
      * @bug: It doesn't clear the screen
      * @deprecated IT DOESN'T WORK
@@ -309,34 +293,7 @@ public class CLI {
                 case 4:
                     //Print Statistics
                     clearConsole();
-                    do{
-                        inputStatistics = secureIntInput(0, 3, cli.statisticsMenu());
-
-                        switch (inputStatistics) {
-                            case 1:
-                                //Print generic statistics
-                                clearConsole();
-                                //System.out.println(Application.getInstance().getWarehouse(inputId).getGenericStatistics());
-                                System.out.println("Statistiche generiche");
-
-                                break;
-                            case 2:
-                                //Print collaborators
-                                clearConsole();
-                                //System.out.println(Application.getInstance().getWarehouse(inputId).getCollaborators());
-                                System.out.println("Collaboratori");
-                                break;
-                            case 3:
-                                //Print file statistics
-                                clearConsole();
-                                //System.out.println(Application.getInstance().getWarehouse(inputId).getFileStatistics());
-                                System.out.println("Statistiche file");
-                                break;
-                            case 0:
-                                clearConsole();
-                                break;
-                        }
-                    } while (inputStatistics != 0);
+                    System.out.println(Application.getInstance().getStatistics(inputId));
                     break;
                 case 5:
                     //Print Warehouse info

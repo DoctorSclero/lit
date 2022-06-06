@@ -258,16 +258,10 @@ public class Warehouse {
         }
     }
 
-    public void getCollaborators() {
+    public String getStatistics() {
+        StringBuilder res = new StringBuilder();
 
-    }
-
-    public void getVersions() {
-
-    }
-
-    public void getFileStats() {
-
+        return res.toString();
     }
 
     /**
