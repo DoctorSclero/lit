@@ -341,8 +341,10 @@ public class CLI {
                 case 5:
                     //Print Warehouse info
                     clearConsole();
-                    //Application.getInstance().getWarehouse(inputId).printInfo();
-                    System.out.println("Info magazzino");
+                    System.out.println("Info magazzino:\n" +
+                            Application.getInstance().getWareHouseInfo(inputId));
+                    System.out.println("\nPremi invio per continuare...");
+                    scanner.nextLine();
                     break;
                 case 6:
                     //Export Warehouse
