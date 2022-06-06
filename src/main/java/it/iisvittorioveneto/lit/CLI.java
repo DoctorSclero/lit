@@ -106,13 +106,13 @@ public class CLI {
      */
     private String mainMenu(){
         StringBuilder strb = new StringBuilder();
-        strb.append("--------------------------------------------------------\n");
-        strb.append("| 1. Crea un nuovo Magazzino                           |\n");
-        strb.append("| 2. Apri Magazzino                                    |\n");
-        strb.append("| 3. Gestisci Magazzino                                |\n");
-        strb.append("| 4. Chiudi Magazzino                                  |\n");
-        strb.append("| 0. Esci                                              |\n");
-        strb.append("--------------------------------------------------------\n");
+        strb.append("╔══════════════════════════════════════════════════════╗\n");
+        strb.append("║ 1. Crea un nuovo Magazzino                           ║\n");
+        strb.append("║ 2. Apri Magazzino                                    ║\n");
+        strb.append("║ 3. Gestisci Magazzino                                ║\n");
+        strb.append("║ 4. Chiudi Magazzino                                  ║\n");
+        strb.append("║ 0. Esci                                              ║\n");
+        strb.append("╚══════════════════════════════════════════════════════╝\n");
         return strb.toString();
     }
 
@@ -122,15 +122,15 @@ public class CLI {
      */
     private String wareHouseMenu(){
         StringBuilder strb = new StringBuilder();
-        strb.append("--------------------------------------------------------\n");
-        strb.append("| 1. Importa File                                      |\n");
-        strb.append("| 2. Salva Versione                                    |\n");
-        strb.append("| 3. Ripristina Versione                               |\n");
-        strb.append("| 4. Visualizza Statistiche                            |\n");
-        strb.append("| 5. Visualizza informazioni Magazzino                 |\n");
-        strb.append("| 6. Esporta Magazzino                                 |\n");
-        strb.append("| 0. Torna Indietro                                    |\n");
-        strb.append("--------------------------------------------------------\n");
+        strb.append("╔══════════════════════════════════════════════════════╗\n");
+        strb.append("║ 1. Importa File                                      ║\n");
+        strb.append("║ 2. Salva Versione                                    ║\n");
+        strb.append("║ 3. Ripristina Versione                               ║\n");
+        strb.append("║ 4. Visualizza Statistiche                            ║\n");
+        strb.append("║ 5. Visualizza informazioni Magazzino                 ║\n");
+        strb.append("║ 6. Esporta Magazzino                                 ║\n");
+        strb.append("║ 0. Torna Indietro                                    ║\n");
+        strb.append("╚══════════════════════════════════════════════════════╝\n");
         return strb.toString();
     }
 
@@ -141,9 +141,9 @@ public class CLI {
      */
     private String listOpenedWarehouses(List<Warehouse> openedWarehouses) {
         StringBuilder strb = new StringBuilder();
-        strb.append("--------------------------------------------------------\n");
+        strb.append("╔══════════════════════════════════════════════════════╗\n");
         for (int i = 0; i < openedWarehouses.size(); i++) {
-            strb.append("| " + (i) + ". " + openedWarehouses.get(i).getName());
+            strb.append("║ " + (i) + ". " + openedWarehouses.get(i).getName());
             if(openedWarehouses.size() < 10){
                 for(int j = 0; j < 50 - openedWarehouses.get(i).getName().length(); j++){
                     strb.append(" ");
@@ -153,9 +153,9 @@ public class CLI {
                     strb.append(" ");
                 }
             }
-            strb.append("|\n");
+            strb.append("║\n");
         }
-        strb.append("--------------------------------------------------------\n");
+        strb.append("╚══════════════════════════════════════════════════════╝\n");
         return strb.toString();
     }
 
@@ -166,12 +166,12 @@ public class CLI {
      */
     private String statisticsMenu(){
         StringBuilder strb = new StringBuilder();
-        strb.append("--------------------------------------------------------\n");
-        strb.append("| 1. Visualizza Statistiche Generali                   |\n");
-        strb.append("| 2. Visualizza Collaboratori                          |\n");
-        strb.append("| 3. Visualizza Statisctiche File                      |\n");
-        strb.append("| 0. Torna Indietro                                    |\n");
-        strb.append("--------------------------------------------------------\n");
+        strb.append("╔══════════════════════════════════════════════════════╗\n");
+        strb.append("║ 1. Visualizza Statistiche Generali                   ║\n");
+        strb.append("║ 2. Visualizza Collaboratori                          ║\n");
+        strb.append("║ 3. Visualizza Statisctiche File                      ║\n");
+        strb.append("║ 0. Torna Indietro                                    ║\n");
+        strb.append("╚══════════════════════════════════════════════════════╝\n");
         return strb.toString();
     }
 
@@ -181,19 +181,8 @@ public class CLI {
      * @deprecated IT DOESN'T WORK
      */
     public final static void clearConsole() {
-        try {
-            final String os = System.getProperty("os.name");
-
-            if (os.contains("Windows"))
-            {
-                Runtime.getRuntime().exec("cls");
-            }
-            else
-            {
-                Runtime.getRuntime().exec("clear");
-            }
-        }
-        catch (final Exception e) {}
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     /**
