@@ -44,11 +44,11 @@ public class CLI {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    System.exit(0);
                     break;
             }
             inputMainMenu = -1;
         }
-            System.exit(0);
     }
 
     /**
