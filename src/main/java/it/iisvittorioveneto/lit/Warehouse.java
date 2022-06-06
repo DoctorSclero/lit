@@ -235,7 +235,12 @@ public class Warehouse {
     }
 
     public StringBuilder getCollaborators() {
+        Object collaborators = settingsDB.getContent().get("collaborators");
+
         StringBuilder res = new StringBuilder();
+
+        res.append(collaborators);
+
         return res;
     }
 
@@ -262,7 +267,9 @@ public class Warehouse {
         try {
             fileSize = this.getFileSize(fileName);
 
-        res.append("file selected = ").append(fileName).append("file size = ").append(fileSize).append("file contributors").append(this.getCollaborators());
+        res.append("file selected = ").append(fileName)
+                .append("file size = ").append(fileSize)
+                .append("file contributors").append(this.getCollaborators());
 
         } catch (IOException e) {e.printStackTrace();}
 
