@@ -218,11 +218,10 @@ public class CLI {
         // Clears the screen
         clearConsole();
 
-        // List all warehouses
-        System.out.println(cli.listOpenedWarehouses(Application.getInstance().getOpenedWarehouses()));
-
         // Inserts the ID of the warehouse to manage
-        inputId = secureIntInput(0, Application.getInstance().getOpenedWarehouses().size(), "Inserisci id del magazzino da gestire: ");
+        inputId = secureIntInput(0, Application.getInstance().getOpenedWarehouses().size(),
+                cli.listOpenedWarehouses(Application.getInstance().getOpenedWarehouses()) +
+                "Inserisci id del magazzino da gestire");
 
         // If the choice isn't valid throw an error
         System.out.println("Id non valido, inserisci un id valido: ");
@@ -310,9 +309,11 @@ public class CLI {
                     //Export Warehouse
                     clearConsole();
                     System.out.println("Inserire il percorso di esportazione: ");
-                    String exportPath = scanner.nextLine();
+                    StringBuilder exportPath = new StringBuilder(scanner.nextLine());
+                    System.out.println("Inserire il nome del file zip: ");
+                    exportPath.append(scanner.nextLine());
                     try {
-                        Application.getInstance().getWarehouse(inputId).exportWarehouse(exportPath);
+                        Application.getInstance().getWarehouse(inputId).exportWarehouse(exportPath.toString());
                     } catch (IOException ioe) {
                         System.err.println("Errore: impossibile esportare il magazzino");
                     }

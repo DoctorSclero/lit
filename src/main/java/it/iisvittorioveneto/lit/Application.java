@@ -105,8 +105,8 @@ public class Application {
         Warehouse warehouse = this.getWarehouse(id);
         res.append("Nome: ").append(warehouse.getName()).append("\n");
         res.append("Descrizione: ").append(warehouse.getDescription()).append("\n");
-        res.append("Proprietario: \nNome completo: ").append(warehouse.getOwner().getUsername());
-        res.append(", email: ").append(warehouse.getOwner().getEmail()).append("\n");
+        res.append("Proprietario: \n\tNome completo: ").append(warehouse.getOwner().getUsername());
+        res.append("\n\tEmail: ").append(warehouse.getOwner().getEmail()).append("\n");
         res.append("Percorso: ").append(warehouse.getPath()).append("\n");
         return res.toString();
     }
