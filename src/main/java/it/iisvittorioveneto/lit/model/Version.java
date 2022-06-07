@@ -3,6 +3,7 @@ package it.iisvittorioveneto.lit.model;
 import it.iisvittorioveneto.lit.database.utils.JSONArray;
 import it.iisvittorioveneto.lit.database.utils.JSONObject;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +22,16 @@ public class Version {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.contributors = contributors;
+    }
+
+    public Version(JSONObject version) {
+        this.id = version.getString("id");
+        this.name = version.getString("name");
+        this.contributors = new LinkedList<>();
+        JSONArray storedContributors = version.getJSONArray("contributors");
+        for (int i = 0; i < storedContributors.length(); i++) {
+            this.contributors.add(new User(storedContributors.getJSONObject(i)));
+        }
     }
 
     /**
