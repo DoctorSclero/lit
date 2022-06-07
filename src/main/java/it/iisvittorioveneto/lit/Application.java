@@ -50,10 +50,17 @@ public class Application {
         users.add(new User("renzo", "venice", "ree"));
         users.add(new User("enzuccio", "fuffy", "enzu"));
 
-        //warehouse.saveVersion(
-        //            "Test Version",
-        //            users
-        //        );
+        warehouse.saveVersion(
+                    "Test Version 1",
+                    users
+                );
+
+        users.add(new User("lancester", "lancester", "lance"));
+
+        warehouse.saveVersion(
+                "Test Version 2",
+                users
+        );
 
         //warehouse.restoreVersion("62fefb10-8bf4-41d3-8382-e446d0bf4db8", new User("restore", "restore@restore.it", "restore"));
     }
@@ -68,6 +75,7 @@ public class Application {
     /**
      * Create a new warehouse at the specified path with the specified name and description.
      * @param name The name of the new warehouse
+     * @param path The path of the new warehouse
      * @param path The path of the new warehouse
      * @param description The description of the new warehouse
      * @param owner The owner of the new warehouse
@@ -93,9 +101,14 @@ public class Application {
     }
 
     public String getWareHouseInfo(int id){
-        String res = "";
-
-        return res;
+        StringBuilder res = new StringBuilder();
+        Warehouse warehouse = this.getWarehouse(id);
+        res.append("Nome: ").append(warehouse.getName()).append("\n");
+        res.append("Descrizione: ").append(warehouse.getDescription()).append("\n");
+        res.append("Proprietario: \nNome completo: ").append(warehouse.getOwner().getUsername());
+        res.append(", email: ").append(warehouse.getOwner().getEmail()).append("\n");
+        res.append("Percorso: ").append(warehouse.getPath()).append("\n");
+        return res.toString();
     }
 
     public List<Warehouse> getOpenedWarehouses() {

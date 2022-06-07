@@ -38,4 +38,10 @@ public class JSONArray extends org.json.JSONArray implements JSONContent {
     public JSONArray getJSONArray(int index) throws JSONException {
         return new JSONArray(super.getJSONArray(index));
     }
+
+    public boolean hasJSONObject(JSONObject object) {
+        for (int i = 0; i < this.length(); i++)
+            if (this.getJSONObject(i).equals(object)) return true;
+        return false;
+    }
 }

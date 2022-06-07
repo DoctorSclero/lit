@@ -27,7 +27,7 @@ public class User {
      * @param jsonUser The user's JSON object
      */
     public User(JSONObject jsonUser) {
-        this.fullName = jsonUser.getString("fullName");
+        this.fullName = jsonUser.getString("fullname");
         this.email = jsonUser.getString("email");
         this.username = jsonUser.getString("username");
     }

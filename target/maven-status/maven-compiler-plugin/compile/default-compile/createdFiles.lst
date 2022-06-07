@@ -1,0 +1,15 @@
+it\iisvittorioveneto\lit\Main.class
+it\iisvittorioveneto\lit\model\Version.class
+it\iisvittorioveneto\lit\Application.class
+it\iisvittorioveneto\lit\Warehouse.class
+it\iisvittorioveneto\lit\model\User.class
+it\iisvittorioveneto\lit\database\utils\JSONArray.class
+it\iisvittorioveneto\lit\CLI.class
+it\iisvittorioveneto\lit\database\utils\JSONObject.class
+it\iisvittorioveneto\lit\database\utils\JSONTokener.class
+it\iisvittorioveneto\lit\exceptions\DirectoryCreationException.class
+it\iisvittorioveneto\lit\utils\Zipper.class
+it\iisvittorioveneto\lit\database\JSONArrayDocument.class
+it\iisvittorioveneto\lit\database\utils\JSONContent.class
+it\iisvittorioveneto\lit\database\JSONObjectDocument.class
+it\iisvittorioveneto\lit\database\JSONDocument.class

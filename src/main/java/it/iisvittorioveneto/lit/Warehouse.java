@@ -136,6 +136,35 @@ public class Warehouse {
         versionsDB.getContent().put(version.toJSONObject());
         versionsDB.save();
 
+        // Updating the statistics
+        statsDB.getContent().put("last_version", version.getId());
+
+        JSONArray storedContributors;
+        if (statsDB.getContent().has("contributors"))
+            storedContributors = statsDB.getContent().getJSONArray("contributors");
+        else
+            storedContributors = new JSONArray();
+
+        for (User contributor : contributors) {
+            // If there are stored contributors
+            if (storedContributors.length() > 0) {
+                boolean found = false;
+                // Check if the contributor is already in the list
+                for (int i = 0; i < storedContributors.length() && !found; i++) {
+                    if (storedContributors.getJSONObject(i).get("email").equals(contributor.getEmail())) {
+                        found = true;
+                    }
+                }
+
+                if (!found) storedContributors.put(contributor.toJSONObject());
+            } else {
+                storedContributors.put(contributor.toJSONObject());
+            }
+        }
+
+        statsDB.getContent().put("contributors", storedContributors);
+        statsDB.save();
+
         // Creating the .lit/versions/{versionID} folder
         File versionDir = Paths.get(this.getPath(), "/.lit/versions/", version.getId()).toFile();
 
@@ -234,6 +263,25 @@ public class Warehouse {
         }
     }
 
+    public String getStatistics() {
+        StringBuilder res = new StringBuilder();
+        res.append("Numero Versioni Create: ").append(versionsDB.getContent().length()).append("\n");
+        res.append("Ultima Versione: ").append(statsDB.getContent().get("last_version")).append("\n");
+        res.append("Numero Contributori: ").append(statsDB.getContent().getJSONArray("contributors").length()).append("\n");
+        res.append("Contributori:");
+        for (int i = 0; i < statsDB.getContent().getJSONArray("contributors").length(); i++) {
+            User collaborator = new User(statsDB.getContent().getJSONArray("contributors").getJSONObject(i));
+            res.append("\n\tContributor " + (i + 1) + "#:")
+                    .append("\n\t\tName: ").append(collaborator.getFullName())
+                    .append("\n\t\tEmail: ").append(collaborator.getEmail())
+                    .append("\n\t\tUsername: ").append(collaborator.getUsername());
+        }
+        return res.toString();
+    }
+
+    /**
+     * ? For Future Versions
+     *
     public StringBuilder getCollaborators() {
         Object collaborators = settingsDB.getContent().get("collaborators");
 
@@ -274,7 +322,8 @@ public class Warehouse {
         } catch (IOException e) {e.printStackTrace();}
 
         return res;
-    }
+
+    } */
 
     /**
      * Saves all the databases.
