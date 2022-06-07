@@ -279,6 +279,14 @@ public class Warehouse {
         return res.toString();
     }
 
+    public List<Version> getVersions() {
+        List<Version> res = new LinkedList<>();
+        for (int i = 0; i < versionsDB.getContent().length(); i++) {
+            res.add(new Version(versionsDB.getContent().getJSONObject(i)));
+        }
+        return res;
+    }
+
     /**
      * ? For Future Versions
      *

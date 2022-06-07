@@ -1,6 +1,7 @@
 package it.iisvittorioveneto.lit;
 
 import it.iisvittorioveneto.lit.model.User;
+import it.iisvittorioveneto.lit.model.Version;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -130,6 +131,31 @@ public class CLI {
         strb.append("║ 5. Visualizza informazioni Magazzino                 ║\n");
         strb.append("║ 6. Esporta Magazzino                                 ║\n");
         strb.append("║ 0. Torna Indietro                                    ║\n");
+        strb.append("╚══════════════════════════════════════════════════════╝\n");
+        return strb.toString();
+    }
+
+    /**
+     * Prints the list of versions
+     * @param versions list of versions
+     * @return string representation of the versions
+     */
+    private String listVersions(List<Version> versions) {
+        StringBuilder strb = new StringBuilder();
+        strb.append("╔══════════════════════════════════════════════════════╗\n");
+        for (int i = 0; i < versions.size(); i++) {
+            strb.append("║ " + (i) + ". " + versions.get(i).getId());
+            if(versions.size() < 10){
+                for(int j = 0; j < 50 - versions.get(i).getId().length(); j++){
+                    strb.append(" ");
+                }
+            }else{
+                for(int j = 0; j < 50 - versions.get(i).getId().length(); j++){
+                    strb.append(" ");
+                }
+            }
+            strb.append("║\n");
+        }
         strb.append("╚══════════════════════════════════════════════════════╝\n");
         return strb.toString();
     }
@@ -276,7 +302,9 @@ public class CLI {
                     //Restore Version
                     clearConsole();
 
-                    System.out.println("Inserire il nome della versione: ");   String versionID = scanner.nextLine();
+                    System.out.println(cli.listVersions(Application.getInstance().getWarehouse(inputId).getVersions()));
+
+                    System.out.println("Inserire l'ID della versione: ");   String versionID = scanner.nextLine();
                     System.out.println("Inserire il proprio nome completo: "); String fullName = scanner.nextLine();
                     System.out.println("Inserire la propria email: ");         String email = scanner.nextLine();
 
